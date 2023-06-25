@@ -51,7 +51,7 @@ jobs:
     #     run: pnpm prebuild
 
       - name: Build and test
-        run: pnpm build && pnpm test:start && pnpm test:dev
+        run: pnpm build && pnpm test-start && pnpm test-dev
 
       - name: Upload test results
         if: ${{ always() }}
