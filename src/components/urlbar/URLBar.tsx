@@ -18,7 +18,6 @@ function validateURL(url: string) {
 export default function URLBar() {
     const { setURL, url, setURLBarError, setURLBarState, urlBarState, urlBarError } = React.useContext(FormContext)
     const [lastPingTriggeredTimestamp, setLastPingTriggeredTimestamp] = React.useState<number>(Date.now())
-    const [lastPingResponseTimestamp, setLastPingResponseTimestamp] = React.useState<number>(0)
 
     const handleURLPing = async () => {
         if (urlBarState === 'loading' || urlBarState === 'success') return
@@ -45,8 +44,7 @@ export default function URLBar() {
                 if (response.status === 0) {
                     setURLBarState('success')
                     setURLBarError(undefined)
-                }
-                else {
+                } else {
                     setURLBarState('error')
                     setURLBarError('invalidResponse')
                 }
@@ -58,7 +56,6 @@ export default function URLBar() {
             })
             .finally(() => {
                 const now = Date.now()
-                setLastPingResponseTimestamp(now)
                 console.info('Ping took', Math.round((now - lastPingTriggeredTimestamp) / 1000), 'ms')
             })
     }
@@ -66,7 +63,7 @@ export default function URLBar() {
     return (
         <div className="flex w-full relative">
             <button className="w-12 h-12 bg-slate-500 text-white rounded-tl-md rounded-bl-md flex justify-center items-center outline-none">
-                <URLBarStatusIcon/>
+                <URLBarStatusIcon />
             </button>
             <input
                 value={url}
