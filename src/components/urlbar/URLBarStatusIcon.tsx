@@ -4,7 +4,7 @@ import React from 'react'
 
 const URLBarStatusIconVariants = {
     idle: {
-        d: 'M24.2772 13.2679C25.6105 14.0377 25.6105 15.9623 24.2772 16.7321L11.8615 23.9003C10.5281 24.6701 8.86146 23.7078 8.86146 22.1682L8.86147 7.8318C8.86147 6.2922 10.5281 5.32994 11.8615 6.09974L24.2772 13.2679Z)',
+        d: 'M24.2772 13.2679C25.6105 14.0377 25.6105 15.9623 24.2772 16.7321L11.8615 23.9003C10.5281 24.6701 8.86146 23.7078 8.86146 22.1682L8.86147 7.8318C8.86147 6.2922 10.5281 5.32994 11.8615 6.09974L24.2772 13.2679Z',
         fill: '#a0debb',
     },
     loading: {
@@ -26,11 +26,7 @@ export default function URLBarStatusIcon() {
 
     return (
         <svg viewBox="0 0 30 30" className="w-10 h-10">
-            <motion.path
-                d={URLBarStatusIconVariants.idle.d}
-                variants={URLBarStatusIconVariants}
-                animate={urlBarState}
-            />
+            <motion.path fill={URLBarStatusIconVariants.idle.fill} variants={URLBarStatusIconVariants} animate={urlBarState} />
         </svg>
     )
 }
