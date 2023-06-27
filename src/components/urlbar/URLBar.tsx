@@ -62,7 +62,7 @@ export default function URLBar() {
 
     return (
         <div className="flex w-full relative">
-            <button className="w-12 h-12 bg-slate-500 text-white rounded-tl-md rounded-bl-md flex justify-center items-center outline-none">
+            <button disabled={urlBarState !== 'idle'} className="w-12 h-12 bg-slate-500 text-white rounded-tl-md rounded-bl-md flex justify-center items-center outline-none">
                 <URLBarStatusIcon />
             </button>
             <input
