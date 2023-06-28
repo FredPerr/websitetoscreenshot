@@ -3,6 +3,8 @@
 import URLBar, { URLBarErrorType, URLBarStateType } from '@/components/urlbar'
 import { FormContext } from '@/contexts/FormContext'
 import { FRAMES, FrameType } from '@/contstants/Frames'
+import { handleURLPing } from '@/utils/PingHandler'
+import Image from 'next/image'
 import React from 'react'
 
 export default function Home() {
@@ -10,6 +12,7 @@ export default function Home() {
     const [urlBarState, setURLBarState] = React.useState<URLBarStateType>('idle')
     const [urlBarError, setURLBarError] = React.useState<URLBarErrorType | undefined>(undefined)
     const [scrollingFormat, setScrollingFormat] = React.useState(true)
+    const [fullscreen, setFullscreen] = React.useState(false)
     const [frame, setFrame] = React.useState<FrameType>(
         FRAMES.Desktop || {
             name: 'Desktop',
@@ -18,7 +21,42 @@ export default function Home() {
             category: 'device',
         }
     )
-    const [fullscreen, setFullscreen] = React.useState(false)
+
+    const [imagePreviewParams, setImagePreviewParams] = React.useState<{
+        frame: FrameType
+        theme?: any
+    }>({ frame })
+    const [imageURL, setImageURL] = React.useState<string | undefined>(undefined)
+
+
+    const handleGeneration = async () => {
+        if (urlBarState === 'idle' || urlBarState === 'error') await handleURLPing({ setURL, setURLBarError, setURLBarState, url, urlBarError, urlBarState })
+
+        setImageURL(undefined)
+        setImagePreviewParams({
+            frame,
+        })
+        const screenshot = await fetch('/api', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                url: url,
+                fullscreen: fullscreen,
+                width: Number(imagePreviewParams.frame.width),
+                height: Number(imagePreviewParams.frame.height),
+            }),
+        })
+
+        if (screenshot.status === 200) {
+            const screenshotData = await screenshot.blob()
+            const screenshotURL = URL.createObjectURL(screenshotData)
+            setImageURL(screenshotURL)
+            return
+        }
+        console.warn('Could not generate screenshot: ', screenshot.status, screenshot.statusText)
+    }
 
     return (
         <FormContext.Provider
@@ -65,7 +103,7 @@ export default function Home() {
                     <div className="flex gap-3 items-center">
                         <label className="label-text">Frame:</label>
                         <div className="dropdown">
-                            <label tabIndex={0} className="m-1 btn bg-blue-50">
+                            <label tabIndex={0} className="m-1 btn bg-blue-50 whitespace-nowrap flex-nowrap">
                                 {frame.name}{' '}
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                                     <path d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clipRule="evenodd" />
@@ -76,13 +114,7 @@ export default function Home() {
                                     const frame = FRAMES[frame_key]
                                     if (!frame) throw new Error("Frame doesn't exist")
                                     return (
-                                        <li
-                                            key={frame_key}
-                                            onClick={(e) => {
-                                                console.log(frame)
-                                                setFrame(frame)
-                                            }}
-                                        >
+                                        <li key={frame_key} onClick={(e) => setFrame(frame)}>
                                             <div className="flex justify-between whitespace-nowrap">
                                                 {frame.name}{' '}
                                                 <i className="text-gray-500 text-sm">
@@ -98,7 +130,7 @@ export default function Home() {
                     <div className="flex gap-3 items-center">
                         <label className="label-text">Theme:</label>
                         <details className="dropdown">
-                            <summary className="m-1 btn bg-blue-50">
+                            <summary className="m-1 btn bg-blue-50 flex-nowrap whitespace-nowrap">
                                 Light (Default)
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
                                     <path d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clipRule="evenodd" />
@@ -114,6 +146,10 @@ export default function Home() {
                         </details>
                     </div>
                 </div>
+                <button className="btn btn-neutral cursor-pointer" disabled={urlBarState !== 'success'} onClick={handleGeneration}>
+                    Generate now
+                </button>
+                <div className="w-full rounded-md p-4">{imageURL && <Image src={imageURL} width={imagePreviewParams.frame.width} height={imagePreviewParams.frame.height} alt={`${url} screenshot`} />}</div>
             </main>
         </FormContext.Provider>
     )
