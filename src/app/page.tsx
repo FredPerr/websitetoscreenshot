@@ -4,8 +4,8 @@ import URLBar, { URLBarErrorType, URLBarStateType } from '@/components/urlbar'
 import { FormContext } from '@/contexts/FormContext'
 import { FRAMES, FrameType } from '@/contstants/Frames'
 import { handleURLPing } from '@/utils/PingHandler'
-import Image from 'next/image'
 import React from 'react'
+import Visual from './visual'
 
 export default function Home() {
     const [url, setURL] = React.useState<string>('')
@@ -26,13 +26,12 @@ export default function Home() {
         frame: FrameType
         theme?: any
     }>({ frame })
-    const [imageURL, setImageURL] = React.useState<string | undefined>(undefined)
-
+    const [image, setImage] = React.useState<ImageBitmap | undefined>(undefined)
 
     const handleGeneration = async () => {
         if (urlBarState === 'idle' || urlBarState === 'error') await handleURLPing({ setURL, setURLBarError, setURLBarState, url, urlBarError, urlBarState })
 
-        setImageURL(undefined)
+        setImage(undefined)
         setImagePreviewParams({
             frame,
         })
@@ -51,8 +50,14 @@ export default function Home() {
 
         if (screenshot.status === 200) {
             const screenshotData = await screenshot.blob()
-            const screenshotURL = URL.createObjectURL(screenshotData)
-            setImageURL(screenshotURL)
+            const img = await createImageBitmap(screenshotData)
+                .then((img) => img)
+                .catch((err) => {
+                    console.warn(err)
+                    return undefined
+                })
+
+            setImage(img)
             return
         }
         console.warn('Could not generate screenshot: ', screenshot.status, screenshot.statusText)
@@ -149,7 +154,7 @@ export default function Home() {
                 <button className="btn btn-neutral cursor-pointer" disabled={urlBarState !== 'success'} onClick={handleGeneration}>
                     Generate now
                 </button>
-                <div className="w-full rounded-md p-4">{imageURL && <Image src={imageURL} width={imagePreviewParams.frame.width} height={imagePreviewParams.frame.height} alt={`${url} screenshot`} />}</div>
+                <div className="w-full rounded-md p-4">{image && <Visual width={imagePreviewParams.frame.width} height={imagePreviewParams.frame.height} image={image} />}</div>
             </main>
         </FormContext.Provider>
     )

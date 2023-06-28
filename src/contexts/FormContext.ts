@@ -12,8 +12,6 @@ export interface FormContextType {
 
     urlBarError: URLBarErrorType | undefined
     setURLBarError: (error: URLBarErrorType | undefined) => void
-
-    // ...
 }
 
 export const FormContext = createContext<FormContextType>({
