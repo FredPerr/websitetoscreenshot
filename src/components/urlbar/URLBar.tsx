@@ -76,7 +76,7 @@ export default function URLBar() {
                 }}
                 name="url"
                 onBlur={handleURLPing}
-                className="outline-none h-12 w-full rounded-tr-md rounded-br-md p-3 bg-slate-100"
+                className="outline-none h-12 w-full rounded-tr-md rounded-br-md p-3 bg-blue-50"
                 type="url"
                 placeholder="Enter the website's full URL"
                 autoComplete="off"

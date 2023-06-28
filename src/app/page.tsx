@@ -38,7 +38,7 @@ export default function Home() {
                 <div className="flex w-full my-5 justify-between">
                     <label className="label cursor-pointer gap-3 flex">
                         <div>Scrolling animation:</div>
-                        <input type="checkbox" className="toggle toggle-info" checked={scrollingFormat} onClick={() => setScrollingFormat(!scrollingFormat)} />
+                        <input type="checkbox" className="toggle toggle-info" checked={scrollingFormat} onChange={() => setScrollingFormat(!scrollingFormat)} />
                         <span className="label-text gap-2 flex items-center">
                             <div className="tooltip" data-tip="Scrolling (ON), creates a GIF of the web page scrolling. Static (OFF), creates a JPEG of the web page.">
                                 <button className="btn btn-circle btn-xs btn-ghost text-info">
@@ -51,7 +51,7 @@ export default function Home() {
                     </label>
                     <label className="label cursor-pointer gap-3 flex">
                         <div>Full-screen screenshot:</div>
-                        <input type="checkbox" disabled={scrollingFormat} className="toggle toggle-info" checked={fullscreen || scrollingFormat} onClick={() => setFullscreen(!fullscreen)} />
+                        <input type="checkbox" disabled={scrollingFormat} className="toggle toggle-info" checked={fullscreen || scrollingFormat} onChange={() => setFullscreen(!fullscreen)} />
                         <span className="label-text gap-2 flex items-center">
                             <div className="tooltip" data-tip="Full-screen: Screenshot the complete web page / height (ON), or screenshot only the frame's height (OFF)">
                                 <button className="btn btn-circle btn-xs btn-ghost text-info">
