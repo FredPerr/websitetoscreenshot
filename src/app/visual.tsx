@@ -1,24 +1,28 @@
 'use client'
 import { FormContext } from '@/contexts/FormContext'
+import { FrameType } from '@/contstants/Frames'
+import { ThemeType } from '@/contstants/Theme'
+import { drawBackground, drawImage } from '@/utils/sketches'
 import React, { useRef, useEffect } from 'react'
 
 interface VisualProps {
     image: ImageBitmap
     width: number
     height: number
+    frame: FrameType
+    theme: ThemeType
 }
 
-const draw = (ctx: CanvasRenderingContext2D, frameCount: number, img: ImageBitmap) => {
-    ctx.drawImage(img, 0, 0)
-}
-
-export default function Visual({ width, height, image }: VisualProps) {
+export default function Visual({ width, height, image, frame, theme }: VisualProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     const { url } = React.useContext(FormContext)
+    const [downloaded, setDownloaded] = React.useState(false)
 
     const handleDownload = (canvas: HTMLCanvasElement | null) => {
         if (!canvas) throw new Error('Could not find canvas element to download.')
+        if (downloaded) throw new Error('Already downloaded.')
 
+        setDownloaded(true)
         const imageUrl = canvas.toDataURL('image/jpeg')
         const link = document.createElement('a')
         link.download = new URL(url).hostname.replace('.', '_') + '.jpg'
@@ -38,7 +42,8 @@ export default function Visual({ width, height, image }: VisualProps) {
         const render = () => {
             frameCount++
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-            draw(ctx, frameCount, image)
+            drawBackground(ctx, theme.bgColor)
+            drawImage(ctx, image, theme.borderWidth)
             animationFrameId = window.requestAnimationFrame(render)
         }
         render()
@@ -46,15 +51,17 @@ export default function Visual({ width, height, image }: VisualProps) {
         return () => {
             window.cancelAnimationFrame(animationFrameId)
         }
-    }, [image])
+    }, [image, frame, theme])
     return (
-        <>
-            <canvas ref={canvasRef} width={width} height={height} />
+        <div>
+            <div className="overflow-auto">
+                <canvas className="w-full" ref={canvasRef} width={width} height={height} />
+            </div>
             <div className="m-2 flex justify-center w-full">
-                <button className="btn btn-secondary" onClick={() => handleDownload(canvasRef.current)}>
+                <button className="btn btn-secondary" disabled={downloaded} onClick={() => handleDownload(canvasRef.current)}>
                     Download (JPEG)
                 </button>
             </div>
-        </>
+        </div>
     )
 }
