@@ -1,11 +1,12 @@
-export interface FrameType {
+export interface Frame {
     width: number
     height: number
     category: 'social' | 'device'
     name: string
+    mobile?: boolean
 }
 
-export const FRAMES: { [key: string]: FrameType } = {
+export const FRAMES: { [key: string]: Frame } = {
     Desktop: {
         width: 1280,
         height: 720,
@@ -17,12 +18,14 @@ export const FRAMES: { [key: string]: FrameType } = {
         height: 844,
         category: 'device',
         name: 'iPhone 14',
+        mobile: true,
     },
     IPadPro11: {
         width: 834,
         height: 1194,
         category: 'device',
         name: 'iPad Pro 11"',
+        mobile: true,
     },
     Monitor: {
         width: 1920,
@@ -47,17 +50,20 @@ export const FRAMES: { [key: string]: FrameType } = {
         height: 1080,
         category: 'social',
         name: 'Instagram Post',
+        mobile: true,
     },
     InstagramStory: {
         width: 1080,
         height: 1920,
         category: 'social',
         name: 'Instagram Story',
+        mobile: true,
     },
     DribbbleShot: {
         width: 800,
         height: 600,
         category: 'social',
         name: 'Dribbble Shot',
+        mobile: true,
     },
 }

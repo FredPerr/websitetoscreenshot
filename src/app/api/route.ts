@@ -6,6 +6,7 @@ const DataSchema = z.object({
     fullscreen: z.boolean(),
     width: z.number().int().min(0).max(10000),
     height: z.number().int().min(0).max(10000),
+    mobile: z.boolean().optional(),
 })
 
 export async function POST(request: Request) {
@@ -20,7 +21,7 @@ export async function POST(request: Request) {
 
     if (!parsed.success) return new Response(parsed.error.toString(), { status: 400 })
 
-    const { url, fullscreen, width, height } = parsed.data
+    const { url, fullscreen, width, height, mobile } = parsed.data
 
     try {
         console.info('Starting to fetch ', url)
@@ -29,6 +30,8 @@ export async function POST(request: Request) {
             defaultViewport: {
                 width,
                 height,
+                // deviceScaleFactor: 1,
+                // isMobile: mobile
             },
             args: ['--no-sandbox', '--disable-setuid-sandbox'],
         })
@@ -53,6 +56,4 @@ export async function POST(request: Request) {
         console.warn('Fetched failed', e)
         return new Response('Error launching browser', { status: 500 })
     }
-
-    return new Response('OK', { status: 200 })
 }

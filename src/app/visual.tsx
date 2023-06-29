@@ -1,16 +1,16 @@
 'use client'
 import { FormContext } from '@/contexts/FormContext'
-import { FrameType } from '@/contstants/Frames'
-import { ThemeType } from '@/contstants/Theme'
-import { drawBackground, drawImage } from '@/utils/sketches'
+import { Frame } from '@/contstants/Frames'
+import { Theme } from '@/contstants/Theme'
+import { drawRoundedImageWithShadow, drawBackground } from '@/utils/sketches'
 import React, { useRef, useEffect } from 'react'
 
 interface VisualProps {
     image: ImageBitmap
     width: number
     height: number
-    frame: FrameType
-    theme: ThemeType
+    frame: Frame
+    theme: Theme
 }
 
 export default function Visual({ width, height, image, frame, theme }: VisualProps) {
@@ -23,7 +23,7 @@ export default function Visual({ width, height, image, frame, theme }: VisualPro
         if (downloaded) throw new Error('Already downloaded.')
 
         setDownloaded(true)
-        const imageUrl = canvas.toDataURL('image/jpeg')
+        const imageUrl = canvas.toDataURL('image/jpeg', 1.0)
         const link = document.createElement('a')
         link.download = new URL(url).hostname.replace('.', '_') + '.jpg'
         link.href = imageUrl
@@ -43,7 +43,7 @@ export default function Visual({ width, height, image, frame, theme }: VisualPro
             frameCount++
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
             drawBackground(ctx, theme.bgColor)
-            drawImage(ctx, image, theme.borderWidth)
+            drawRoundedImageWithShadow(ctx, image, theme)
             animationFrameId = window.requestAnimationFrame(render)
         }
         render()
@@ -55,7 +55,7 @@ export default function Visual({ width, height, image, frame, theme }: VisualPro
     return (
         <div>
             <div className="overflow-auto">
-                <canvas className="w-full" ref={canvasRef} width={width} height={height} />
+                <canvas className="w-auto max-w-full" ref={canvasRef} width={width} height={height} />
             </div>
             <div className="m-2 flex justify-center w-full">
                 <button className="btn btn-secondary" disabled={downloaded} onClick={() => handleDownload(canvasRef.current)}>

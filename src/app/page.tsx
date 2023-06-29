@@ -2,11 +2,11 @@
 
 import URLBar, { URLBarErrorType, URLBarStateType } from '@/components/urlbar'
 import { FormContext } from '@/contexts/FormContext'
-import { FRAMES, FrameType } from '@/contstants/Frames'
+import { FRAMES, Frame } from '@/contstants/Frames'
 import { handleURLPing } from '@/utils/PingHandler'
 import React from 'react'
 import Visual from './visual'
-import { ThemeLight, ThemeType } from '@/contstants/Theme'
+import { ThemeLight, Theme } from '@/contstants/Theme'
 
 export default function Home() {
     const [url, setURL] = React.useState<string>('')
@@ -14,9 +14,9 @@ export default function Home() {
     const [urlBarError, setURLBarError] = React.useState<URLBarErrorType | undefined>(undefined)
     const [scrollingFormat, setScrollingFormat] = React.useState(true)
     const [fullscreen, setFullscreen] = React.useState(false)
-    const [theme, setTheme] = React.useState<ThemeType>(ThemeLight)
+    const [theme, setTheme] = React.useState<Theme>(ThemeLight)
     const [generating, setGenerating] = React.useState(false)
-    const [frame, setFrame] = React.useState<FrameType>(
+    const [frame, setFrame] = React.useState<Frame>(
         FRAMES.Desktop || {
             name: 'Desktop',
             width: 1920,
@@ -26,9 +26,9 @@ export default function Home() {
     )
 
     const [imagePreviewParams, setImagePreviewParams] = React.useState<{
-        frame: FrameType
-        theme?: any
-    }>({ frame })
+        frame: Frame
+        theme: Theme
+    }>({ frame, theme })
     const [image, setImage] = React.useState<ImageBitmap | undefined>(undefined)
 
     const handleGeneration = async () => {
@@ -36,7 +36,7 @@ export default function Home() {
 
         setImage(undefined)
         setImagePreviewParams({
-            frame,
+            frame, theme
         })
         setGenerating(true)
         const screenshot = await fetch('/api', {
@@ -50,7 +50,17 @@ export default function Home() {
                 width: Number(imagePreviewParams.frame.width),
                 height: Number(imagePreviewParams.frame.height),
             }),
+        }).then((value)=> value).catch((err) => {
+            console.warn(err)
+            setGenerating(false)
+            return undefined
         })
+
+        if (!screenshot) {
+            console.warn('Could not generate screenshot')
+            setGenerating(false)
+            return
+        }
 
         if (screenshot.status === 200) {
             const screenshotData = await screenshot.blob()
@@ -58,6 +68,7 @@ export default function Home() {
                 .then((img) => img)
                 .catch((err) => {
                     console.warn(err)
+                    setGenerating(false)
                     return undefined
                 })
 
