@@ -20,6 +20,7 @@ export async function POST(request: Request) {
     const parsed = DataSchema.safeParse(body)
 
     if (!parsed.success) return new Response(parsed.error.toString(), { status: 400 })
+    console.log('test')
 
     const { url, fullscreen, width, height, mobile } = parsed.data
 
