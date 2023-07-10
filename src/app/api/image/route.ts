@@ -44,12 +44,18 @@ export async function POST(request: Request) {
 
     try {
         const page = await browser.newPage()
-        page.goto(url)
-
-        return NextResponse.json('OK', { status: 200 })
+        await page.goto(url, { waitUntil: 'networkidle2' })
+        const screenshot = await page.screenshot({ type: 'jpeg', quality: 100, fullPage: fullscreen })
+        await browser.close()
+        return new Response(screenshot, {
+            status: 200,
+            headers: {
+                'content-type': 'application/octet-stream',
+            },
+        })
     } catch (e) {
         return NextResponse.json('Could not screenshot the website', { status: 500 })
     } finally {
-        await browser.close()
+        if (browser.isConnected()) await browser.close()
     }
 }

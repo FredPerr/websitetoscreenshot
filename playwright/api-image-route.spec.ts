@@ -21,6 +21,7 @@ test('Image API Endpoint', async ({ request }) => {
     expect(badJSONRequest.statusText() === 'Unable to parse JSON body in request')
 
     try {
+        // returns blob screenshot
         const okRequest = await request.post('/api/image', {
             data: {
                 url: 'https://google.com',
@@ -30,6 +31,7 @@ test('Image API Endpoint', async ({ request }) => {
             },
         })
         expect(okRequest.status() === 200)
+        expect(okRequest.headers()['content-type'] === 'application/octet-stream')
     } catch (e) {
         console.log(e)
     }
