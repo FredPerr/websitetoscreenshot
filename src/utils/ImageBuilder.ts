@@ -8,7 +8,7 @@ export async function ImageResponseResolver(response: Response) {
         const blob = await response.blob()
         return URL.createObjectURL(blob)
     } catch (e) {
-        console.warn(e)
+        console.error(e)
         return
     }
 }
