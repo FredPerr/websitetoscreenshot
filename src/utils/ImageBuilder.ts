@@ -1,3 +1,14 @@
-function generateImage(buffer: Buffer) {
-    return buffer.toString('base64')
+export async function ImageResponseResolver(response: Response) {
+    if (!response.ok) {
+        console.warn('Could not use the image response: ' + response.statusText)
+        return
+    }
+
+    try {
+        const blob = await response.blob()
+        return URL.createObjectURL(blob)
+    } catch (e) {
+        console.warn(e)
+        return
+    }
 }
