@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import React from 'react'
-import { ImageResponseResolver } from '@/utils/ImageBuilder'
 import { toJpeg } from 'html-to-image'
+import { resolveImageResponse } from '@/utils/ImageRequestResolver'
 
 
 export default function Home() {
@@ -32,9 +32,9 @@ export default function Home() {
                 width: 1920,
                 height: 1080,
             })
-        })
-        const imgURL = await ImageResponseResolver(screenshotReq)
-        setImage(imgURL)
+        });
+        const imgURL = await resolveImageResponse(screenshotReq);
+        setImage(imgURL);
         setTimeout(() => generateImageResult(), 1000) // see https://www.npmjs.com/package/html-to-image
     }
 
