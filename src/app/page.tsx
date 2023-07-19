@@ -1,14 +1,17 @@
 'use client'
 
 import React from 'react'
-import DesktopFrame from '@/components/frames/DesktopFrame'
 import { FRAME_CANVAS_ID, FRAME_ID } from '@/components/frames'
 import { drawImage } from '@/utils/CanvasPainter'
 import { toPng } from 'html-to-image'
+import Frame from "@/components/frames/Frame"
 
 
 export default function Home() {
 
+    const [width, setWidth] = React.useState<number>(1920)
+    const [height, setHeight] = React.useState<number>(1080)
+    const [url, setURL] = React.useState<string>('https://webkick.ca')
     const [bitmap, setBitmap] = React.useState<undefined | ImageBitmap>(undefined)
     const [resultURL, setResultURL] = React.useState<string | undefined>(undefined)
 
@@ -20,10 +23,10 @@ export default function Home() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                url: 'https://webkick.ca',
+                url: url,
                 fullscreen: false,
-                width: 1920,
-                height: 1080,
+                width: width,
+                height: height,
             })
         });
         if (!screenshotReq.ok)
@@ -51,7 +54,7 @@ export default function Home() {
 
         const canvas = document.getElementById(FRAME_CANVAS_ID) as HTMLCanvasElement | null
         if (!canvas) {
-            console.error("Could not get teh frame canvas ID to paint on")
+            console.error("Could not get the frame canvas ID to paint on")
             return
         }
 
@@ -67,9 +70,32 @@ export default function Home() {
 
     return (
         <div>
-            <input type="button" value="Generate frame" onClick={() => generateScreenshot()} className='cursor-pointer btn btn-neutral' />
+            <label className="label" htmlFor="url">URL</label>
+            <input className="input input-bordered input-primary" type="url" onChange={(e) => setURL(e.currentTarget.value)} />
+            <label className="label" htmlFor="width">Width</label>
+            <input className="input input-bordered input-primary" name="width" onChange={(e) => {
+                try {
+                    const px = Number(e.currentTarget.value);
+                    setWidth(px)
+                } catch {
+                    return
+                }
+            }} />
+
+            <label className="label" htmlFor="height">Height</label>
+            <input className="input input-bordered input-primary" name="height" onChange={(e) => {
+                try {
+                    const px = Number(e.currentTarget.value);
+                    setHeight(px)
+                } catch {
+                    return
+                }
+            }
+            } />
+            <input type="button" value="Generate frame" onClick={() => generateScreenshot()} className='cursor-pointer btn btn-primary' />
             <div>
-                <DesktopFrame url="https://google.com" />
+                {/* <DesktopFrame url="https://google.com" />  */}
+                <Frame displayURL={url} frame={{ borderWidth: 2, borderColor: 'gray', borderRadius: 6 }} width={width} height={height} />
             </div>
             <button className="btn btn-primary" onClick={() => generateVisualImage()}>Generate visual image</button>
             {
