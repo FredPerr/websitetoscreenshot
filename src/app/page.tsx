@@ -1,23 +1,16 @@
 'use client'
 
-import Image from 'next/image'
 import React from 'react'
-import { toJpeg } from 'html-to-image'
-import { resolveImageResponse } from '@/utils/ImageRequestResolver'
+import DesktopFrame from '@/components/frames/DesktopFrame'
+import { FRAME_CANVAS_ID, FRAME_ID } from '@/components/frames'
+import { drawImage } from '@/utils/CanvasPainter'
+import { toPng } from 'html-to-image'
 
 
 export default function Home() {
-    const [image, setImage] = React.useState<undefined | string>(undefined)
-    const [url, setURL] = React.useState<string | undefined>(undefined)
 
-    const generateImageResult = async () => {
-
-        const domEl = document.getElementById('image-root')
-        if (!domEl)
-            throw new Error('Could not find the image dom element')
-
-        setURL(await toJpeg(domEl))
-    }
+    const [bitmap, setBitmap] = React.useState<undefined | ImageBitmap>(undefined)
+    const [resultURL, setResultURL] = React.useState<string | undefined>(undefined)
 
     const generateScreenshot = async () => {
 
@@ -27,35 +20,61 @@ export default function Home() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                url: 'https://www.fredericperron.ca',
+                url: 'https://webkick.ca',
                 fullscreen: false,
                 width: 1920,
                 height: 1080,
             })
         });
-        const imgURL = await resolveImageResponse(screenshotReq);
-        setImage(imgURL);
-        setTimeout(() => generateImageResult(), 1000) // see https://www.npmjs.com/package/html-to-image
+        if (!screenshotReq.ok)
+            return
+
+        const blob = await screenshotReq.blob()
+        setBitmap(await createImageBitmap(blob))
     }
 
+    const generateVisualImage = async () => {
 
+        const frame = document.getElementById(FRAME_ID)
+        if (!frame) {
+            console.error("Could not get the frame to generate the final visual result")
+            return
+        }
+
+        const image = await toPng(frame)
+        setResultURL(image)
+    }
+
+    React.useEffect(() => {
+        if (!bitmap)
+            return
+
+        const canvas = document.getElementById(FRAME_CANVAS_ID) as HTMLCanvasElement | null
+        if (!canvas) {
+            console.error("Could not get teh frame canvas ID to paint on")
+            return
+        }
+
+        const ctx = canvas.getContext('2d')
+        if (!ctx) {
+            console.error("Could not get 2D context of the frame canvas")
+            return
+        }
+
+        drawImage(bitmap, ctx)
+
+    }, [bitmap])
 
     return (
-        <>
-            <form>
-
-                <input type="button" value="Generate screenshot" onClick={() => generateScreenshot()} />
-
-            </form>
-            <div id="image-root" className='p-10 bg-red-300'>
-                {image &&
-                    <Image src={image} alt="screenshot preview" width={1920} height={1080} />
-                }
+        <div>
+            <input type="button" value="Generate frame" onClick={() => generateScreenshot()} className='cursor-pointer btn btn-neutral' />
+            <div>
+                <DesktopFrame url="https://google.com" />
             </div>
-            {url &&
-                <a href={url}>Click to download result</a>
+            <button className="btn btn-primary" onClick={() => generateVisualImage()}>Generate visual image</button>
+            {
+                resultURL && <a href={resultURL} target='_blank' rel="noreferrer">View result</a>
             }
-        </>
-
+        </div>
     )
 }
