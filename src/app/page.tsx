@@ -95,7 +95,7 @@ export default function Home() {
             <input type="button" value="Generate frame" onClick={() => generateScreenshot()} className='cursor-pointer btn btn-primary' />
             <div>
                 {/* <DesktopFrame url="https://google.com" />  */}
-                <Frame displayURL={url} frame={{ borderWidth: 2, borderColor: 'gray', borderRadius: 6 }} width={width} height={height} />
+                <Frame displayURL={url} frame={{ borderWidth: 2, borderColor: 'gray', borderRadius: 6 }} width={width} height={height} padding={40} />
             </div>
             <button className="btn btn-primary" onClick={() => generateVisualImage()}>Generate visual image</button>
             {
