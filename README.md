@@ -1,5 +1,5 @@
-# Website to Visual
-Convert website to a screenshot or a scrolling video (GIF) with beautiful contours in seconds.
+# Website to Screenshot
+Convert website to a screenshot
 
 ## Getting started
 `pnpm install && pnpm prepare`
