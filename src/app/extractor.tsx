@@ -26,7 +26,7 @@ export default function Extractor({ isVisualGenerated, url }: { isVisualGenerate
         <div>
             <button onClick={() =>
                 handleDownload()
-            }>Download result (png)</button>
+            } className="btn btn-secondary my-8">Download result (png)</button>
         </div>
     )
 } 

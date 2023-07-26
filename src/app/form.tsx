@@ -5,9 +5,9 @@ import React from "react"
 type BackgroundType = 'gradient-linear' | 'solid' | 'gradient-radial'
 
 const FORM_DEFAULTS = {
-    WEBSITE_URL: 'https://fredericperron.ca/en',
-    VIEWPORT_WIDTH: 720,
-    VIEWPORT_HEIGHT: 480,
+    WEBSITE_URL: 'https://google.com',
+    VIEWPORT_WIDTH: 1080,
+    VIEWPORT_HEIGHT: 720,
     WINDOW_BORDER_RADIUS: 5,
     WINDOW_BORDER_WIDTH: 1,
     WINDOW_BORDER_COLOR: 'black',
@@ -56,67 +56,90 @@ export default function Form(props: FormProps) {
 
 
     return (
-        <form id="frame-form">
-            <label htmlFor="url">Website URL</label>
-            <input name="url" type="url" placeholder="Enter the URL of the website to screenshot" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.currentTarget.value)} />
+        <>
+            <form id="frame-form" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 items-center justify-center">
+                <div>
+                    <label htmlFor="url" className="label label-text">Website URL</label>
+                    <input className="input input-bordered" name="url" type="url" placeholder="Enter the URL of the website to screenshot" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.currentTarget.value)} />
+                </div>
 
-            <br />
+                <br />
 
-            <label htmlFor="viewport-width">Screenshot Viewport Width</label>
-            <input name="viewport-width" type="number" value={viewportWidth} placeholder='Width of the final image file and website viewport width used' onChange={(e) => setViewportWidth(Number(e.currentTarget.value))} />
+                <div>
+                    <label htmlFor="viewport-width" className="label label-text" >Screenshot Viewport Width</label>
+                    <input className="input input-bordered" name="viewport-width" type="number" value={viewportWidth} placeholder='Width of the final image file and website viewport width used' onChange={(e) => setViewportWidth(Number(e.currentTarget.value))} />
+                </div>
+                <br />
 
-            <br />
+                <div>
+                    <label htmlFor="viewport-height" className="label label-text" >Screenshot Viewport Height</label>
+                    <input className="input input-bordered" name="viewport-height" type="number" value={viewportHeight} placeholder='Height of the final image file and website viewport height used' onChange={(e) => setViewportHeight(Number(e.currentTarget.value))} />
 
-            <label htmlFor="viewport-height">Screenshot Viewport Height</label>
-            <input name="viewport-height" type="number" value={viewportHeight} placeholder='Height of the final image file and website viewport height used' onChange={(e) => setViewportHeight(Number(e.currentTarget.value))} />
+                </div>
+                <br />
 
-            <br />
+                <div>
+                    <label htmlFor="window-border-radius" className="label label-text" >Window Border Radius</label>
+                    <input className="input input-bordered" name="window-border-radius" type="number" value={windowBorderRadius} onChange={(e) => setWindowBorderRadius(Number(e.currentTarget.value))} />
+                </div>
 
-            <label htmlFor="window-border-radius">Window Border Radius</label>
-            <input name="window-border-radius" type="number" value={windowBorderRadius} onChange={(e) => setWindowBorderRadius(Number(e.currentTarget.value))} />
+                <br />
 
-            <br />
+                <div>
+                    <label className="label label-text" htmlFor="window-border-width">Window Border Width</label>
+                    <input className="input input-bordered" name="window-border-width" type="number" value={windowBorderWidth} onChange={(e) => setWindowBorderWidth(Number(e.currentTarget.value))} />
 
-            <label htmlFor="window-border-width">Window Border Width</label>
-            <input name="window-border-width" type="number" value={windowBorderWidth} onChange={(e) => setWindowBorderWidth(Number(e.currentTarget.value))} />
+                </div>
+                <br />
 
-            <br />
+                <div>
+                    <label className="label label-text" htmlFor="window-border-color">Window Border Color</label>
+                    <input className="input input-bordered" name="window-border-color" type="color" value={windowBorderColor} onChange={(e) => setWindowBorderColor(e.currentTarget.value)} />
 
-            <label htmlFor="window-border-color">Window Border Color</label>
-            <input name="window-border-color" type="color" value={windowBorderColor} onChange={(e) => setWindowBorderColor(e.currentTarget.value)} />
+                </div>
+                <br />
 
-            <br />
+                <div>
+                    <label className="label label-text" htmlFor="window-margin">Window Margin</label>
+                    <input className="input input-bordered" name="contour-width" type="number" value={windowMargin} onChange={(e) => setWindowMargin(Number(e.currentTarget.value))} />
 
-            <label htmlFor="window-margin">Window Margin</label>
-            <input name="contour-width" type="number" value={windowMargin} onChange={(e) => setWindowMargin(Number(e.currentTarget.value))} />
-
-            <br />
+                </div>
+                <br />
 
 
-            <label htmlFor="window-shadow">Window Shadow</label>
-            <input name="window-shadow" type="number" value={windowShadow} onChange={(e) => setWindowShadow(Number(e.currentTarget.value))} />
+                <div>
+                    <label className="label label-text" htmlFor="window-shadow">Window Shadow</label>
+                    <input className="input input-bordered" name="window-shadow" type="number" value={windowShadow} onChange={(e) => setWindowShadow(Number(e.currentTarget.value))} />
 
-            <br />
+                </div>
+                <br />
 
-            <label>Background Type</label>
-            <select name="background-type" value={backgroundType} onChange={(e) => setBackgroundType(e.currentTarget.value as BackgroundType)}>
-                <option value="solid">Solid</option>
-                <option value="gradient-radial">Radial Gradient</option>
-                <option value="gradient-linear">Linear Gradient</option>
-            </select>
+                <div>
+                    <label htmlFor="background-type" className="label label-text" >Background Type</label>
+                    <select className="select select-bordered" name="background-type" value={backgroundType} onChange={(e) => setBackgroundType(e.currentTarget.value as BackgroundType)}>
+                        <option value="solid">Solid</option>
+                        <option value="gradient-radial">Radial Gradient</option>
+                        <option value="gradient-linear">Linear Gradient</option>
+                    </select>
+                </div>
 
-            <br />
+                <br />
 
-            <label htmlFor="background-color-1">Background Color 1</label>
-            <input name="background-color-1" type="color" value={backgroundColor1} onChange={(e) => setBackgroundColor1(e.currentTarget.value)} />
+                <div>
+                    <label htmlFor="background-color-1" className="label label-text" >Background Color 1</label>
+                    <input className="input input-bordered" name="background-color-1" type="color" value={backgroundColor1} onChange={(e) => setBackgroundColor1(e.currentTarget.value)} />
 
-            <br />
+                </div>
+                <br />
 
-            <label htmlFor="background-color-2">Background Color 2</label>
-            <input name="background-color-2" type="color" value={backgroundColor2} onChange={(e) => setBackgroundColor2(e.currentTarget.value)} />
+                <div>
+                    <label htmlFor="background-color-2" className="label label-text" >Background Color 2</label>
+                    <input className="input input-bordered" name="background-color-2" type="color" value={backgroundColor2} onChange={(e) => setBackgroundColor2(e.currentTarget.value)} />
 
-            <br />
+                </div>
+                <br />
 
+            </form>
             <button type="button" onClick={() => props.onSubmit({
                 websiteUrl,
                 viewportHeight,
@@ -129,7 +152,8 @@ export default function Form(props: FormProps) {
                 backgroundColor2,
                 backgroundType,
                 windowShadow
-            })}>Generate Screenshot</button>
-        </form>
+            })} className="btn btn-primary my-8">Generate Screenshot</button>
+        </>
     )
+
 }
