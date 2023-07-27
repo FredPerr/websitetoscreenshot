@@ -3,8 +3,8 @@ import React from 'react'
 
 
 export const metadata = {
-    title: 'Website To Screenshot',
-    description: 'Convert website to a screenshot with beautiful contours in seconds for marketing and presentation.',
+    title: 'WebsiteToVisual',
+    description: 'Convert website to a screenshot or a scrolling video (GIF) with beautiful contours in seconds.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
