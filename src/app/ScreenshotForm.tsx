@@ -1,7 +1,8 @@
 'use client'
 
+import { PROCESS_TABS } from "@/constants/DOM"
 import { FORM_ERROR_MESSAGES, URL_REGEX } from "@/constants/RequestForm"
-import { FORMERR } from "dns"
+import { requestScreenshot } from "@/utils/ScreenshotRequestAPI"
 import React from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
 import { z } from "zod"
@@ -14,7 +15,15 @@ const Schema = z.object({
 
 type SchemaType = z.infer<typeof Schema>
 
-export default function ScreenshotForm() {
+interface ScreenshotFormProps {
+    screenshotBitmap: ImageBitmap | undefined,
+    setScreenshotBitmap: React.Dispatch<React.SetStateAction<ImageBitmap | undefined>>
+}
+
+export default function ScreenshotForm(props: ScreenshotFormProps) {
+
+    const [loading, setLoading] = React.useState(false)
+    const [error, setError] = React.useState<string | undefined>(undefined)
 
     const { register, formState: { errors }, handleSubmit } = useForm<SchemaType>({
         defaultValues: {
@@ -24,12 +33,38 @@ export default function ScreenshotForm() {
         }
     })
 
-    const onSubmit: SubmitHandler<SchemaType> = (data) => {
-        console.table(data)
+    const onSubmit: SubmitHandler<SchemaType> = async (data) => {
+
+        const validation = Schema.safeParse(data)
+        if (!validation.success)
+            return
+
+        const { url, width, height } = validation.data
+
+        console.info('Sending the screenshot request... This may take up to 20 seconds')
+        setError(undefined)
+        try {
+            const image_bitmap = await requestScreenshot(url, width, height)
+            props.setScreenshotBitmap(image_bitmap)
+
+            const stylingTab = document.getElementById(PROCESS_TABS.styling.tab_id)
+            if (stylingTab) {
+                setTimeout(() => {
+                    stylingTab.click()
+                    console.info('Switching to the Styling tab')
+                }, 1000)
+            }
+            else console.info('You can now click on the styling tab to view and edit your screenshot')
+        } catch (e) {
+            console.error("Could not get the screenshot of the provided url: " + e)
+            setError("Could not screenshot the given URL: " + e)
+        } finally {
+            setLoading(false)
+        }
     }
 
     return (
-        <form className="grid grid-cols-1 md:grid-cols-2 w-full gap-x-8 gap-y-3" onSubmit={handleSubmit(onSubmit)}>
+        <form className="grid px-6 grid-cols-1 md:grid-cols-2 w-full gap-x-8 gap-y-3" onSubmit={handleSubmit(onSubmit)}>
 
             <div className="md:col-span-2">
                 <label className="label label-text">URL of the web page to screenshot</label>
@@ -65,8 +100,14 @@ export default function ScreenshotForm() {
                 </label>
             </div>
 
-            <div className="md:col-span-2 w-full flex justify-center align-middle">
-                <input className="btn btn-primary" type="submit" value="Screenshot & Style" />
+            <div className="md:col-span-2 w-full flex justify-center items-center flex-col">
+                <button className="btn btn-primary" type="submit">{loading && <span className="loading loading-spinner text-white"></span>}Take a screenshot</button>
+                <label className="label w-fit">
+                    {loading &&
+                        <span className="label label-text-alt text-primary">This may take up to 20 seconds...</span>
+                    }
+                    <span className="label label-text-alt text-error">{error}</span>
+                </label>
             </div>
 
         </form>
