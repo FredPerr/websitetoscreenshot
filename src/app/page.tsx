@@ -31,14 +31,14 @@ export default function Home() {
                     }
                 }}>{PROCESS_TABS.checkout.name}</a>
             </div>
-            <div className='carousel w-full m-10 h-fit'>
-                <div id={PROCESS_TABS.screenshot.carousel_item_id} className='carousel-item w-full'>
+            <div className='w-full m-10 h-fit gap-y-10 flex flex-col items-center'>
+                <div id={PROCESS_TABS.screenshot.carousel_item_id} className='w-full border-b'>
                     <ScreenshotForm screenshotBitmap={screenshotBitmap} setScreenshotBitmap={setScreenshotBitmap} />
                 </div>
-                <div id={PROCESS_TABS.styling.carousel_item_id} className='carousel-item w-full'>
-                    <StylingContainer screenshotBitmap={screenshotBitmap}/>
+                <div id={PROCESS_TABS.styling.carousel_item_id} className='w-full border-b'>
+                    <StylingContainer screenshotBitmap={screenshotBitmap} />
                 </div>
-                <div id={PROCESS_TABS.checkout.carousel_item_id} className='carousel-item w-full'>
+                <div id={PROCESS_TABS.checkout.carousel_item_id} className='w-full border-b'>
                     <CheckoutForm />
                 </div>
             </div>

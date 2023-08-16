@@ -43,7 +43,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
                         <input checked={fileType === 'png'} onChange={() => setFileType('png')} className="join-item btn btn-sm" type="radio" name="fileType" aria-label="Png" />
                     </div>
                 </div>
-                <button className="btn btn-primary" onClick={handleDownload}>{isDownloading && <span className="loading loading-spinner text-primary"></span>}Download</button>
+                <button className="btn btn-primary my-4" onClick={handleDownload}>{isDownloading && <span className="loading loading-spinner text-primary"></span>}Download</button>
             </form>
         </div >
     )
