@@ -66,8 +66,7 @@ export default function ScreenshotForm(props: ScreenshotFormProps) {
     }
 
     return (
-        <form className="grid px-6 grid-cols-1 md:grid-cols-2 w-full gap-x-8 gap-y-3" onSubmit={handleSubmit(onSubmit)}>
-
+        <form className="grid px-6 grid-cols-1 md:grid-cols-2 w-full gap-x-8 gap-y-3 h-fit" onSubmit={handleSubmit(onSubmit)}>
             <div className="md:col-span-2">
                 <label className="label label-text">URL of the web page to screenshot</label>
                 <input className="input input-bordered input-primary w-full"
@@ -82,7 +81,6 @@ export default function ScreenshotForm(props: ScreenshotFormProps) {
                     <span className="label-text-alt text-error">{errors.url?.type === 'pattern' && FORM_ERROR_MESSAGES.URL_PATTERN_MISMATCH}</span>
                 </label>
             </div>
-
 
             <div>
                 <label className="label label-text">Website screenshot viewport width (px)</label>
@@ -103,7 +101,7 @@ export default function ScreenshotForm(props: ScreenshotFormProps) {
             </div>
 
             <div className="md:col-span-2 w-full flex justify-center items-center flex-col">
-                <button className="btn btn-primary" type="submit">{loading && <span className="loading loading-spinner text-white"></span>}Take a screenshot</button>
+                <button className="btn btn-primary" disabled={loading} type="submit">{loading && <span className="loading loading-spinner text-white"></span>}Take a screenshot</button>
                 <label className="label w-fit">
                     {loading &&
                         <span className="label label-text-alt text-primary">This may take up to 20 seconds...</span>

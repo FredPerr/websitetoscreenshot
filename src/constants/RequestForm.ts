@@ -5,6 +5,8 @@ const ENDPOINT_REQUEST = {
     fullscreen: false,
 }
 
+type BackgroundType = 'linear' | 'radial' | 'solid'
+
 type StylingType = {
     background: {
         type: 'linear' | 'radial' | 'solid'
@@ -46,4 +48,4 @@ const FORM_ERROR_MESSAGES = {
 }
 
 export { ENDPOINT_REQUEST, STYLING_DEFAULTS, URL_REGEX, FORM_ERROR_MESSAGES }
-export type { StylingType }
+export type { StylingType, BackgroundType }

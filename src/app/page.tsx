@@ -11,7 +11,7 @@ export default function Home() {
     const [screenshotBitmap, setScreenshotBitmap] = React.useState<ImageBitmap | undefined>()
 
     return (
-        <div className='flex flex-col justify-center mx-4 md:mx-12 lg:mx-20 items-center'>
+        <div className='flex flex-col mx-4 md:mx-12 lg:mx-20 items-center'>
             <h1 className='font-bold text-3xl md:text-5xl lg:text-6xl text-primary text-center my-5'>WebsiteToScreenshot.com</h1>
             <div className='tabs tabs-boxed w-full justify-center gap-x-6'>
                 <a href={`#${PROCESS_TABS.screenshot.carousel_item_id}`} id={PROCESS_TABS.screenshot.tab_id} className={`tab ${activeTabId === PROCESS_TABS.screenshot.tab_id && 'tab-active'}`} onClick={() => setActiveTabId(PROCESS_TABS.screenshot.tab_id)}>{PROCESS_TABS.screenshot.name}</a>
@@ -30,7 +30,7 @@ export default function Home() {
                     }
                 }}>{PROCESS_TABS.checkout.name}</a>
             </div>
-            <div className='carousel w-full m-10'>
+            <div className='carousel w-full m-10 h-fit'>
                 <div id={PROCESS_TABS.screenshot.carousel_item_id} className='carousel-item w-full'>
                     <ScreenshotForm screenshotBitmap={screenshotBitmap} setScreenshotBitmap={setScreenshotBitmap} />
                 </div>
