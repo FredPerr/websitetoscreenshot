@@ -1,4 +1,5 @@
 const STYLING_CANVAS_ID = 'styling-canvas'
+const STYLING_CONTAINER_ID = 'styling-container'
 
 type ProcessTabType = {
     name: string
@@ -30,4 +31,4 @@ const PROCESS_TABS: ProcessTabsType = {
     },
 }
 
-export { STYLING_CANVAS_ID, PROCESS_TABS }
+export { STYLING_CANVAS_ID, STYLING_CONTAINER_ID, PROCESS_TABS }

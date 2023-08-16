@@ -4,6 +4,7 @@ import React from 'react'
 import ScreenshotForm from './ScreenshotForm'
 import { PROCESS_TABS } from '@/constants/DOM'
 import StylingContainer from './StylingContainer'
+import CheckoutForm from './CheckoutForm'
 
 export default function Home() {
 
@@ -38,7 +39,7 @@ export default function Home() {
                     <StylingContainer screenshotBitmap={screenshotBitmap}/>
                 </div>
                 <div id={PROCESS_TABS.checkout.carousel_item_id} className='carousel-item w-full'>
-                    <p>Checkout Tab Opened</p>
+                    <CheckoutForm />
                 </div>
             </div>
         </div>

@@ -1,10 +1,9 @@
 'use client'
 import ColorPicker from '@/components/ColorPicker'
-import { STYLING_CANVAS_ID } from '@/constants/DOM'
+import { PROCESS_TABS, STYLING_CANVAS_ID, STYLING_CONTAINER_ID } from '@/constants/DOM'
 import { STYLING_DEFAULTS } from '@/constants/RequestForm'
 import { compose } from '@/utils/CssBackgroundComposer'
 import React from 'react'
-import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 interface StylingContainerProps {
@@ -57,7 +56,7 @@ export default function StylingContainer({ screenshotBitmap }: StylingContainerP
 
     return (
         <div className='w-full flex flex-col items-center'>
-            <form className='grid px-6 grid-cols-1 md:grid-cols-2 w-full gap-x-8 gap-y-3 justify-center items-center'>
+            <form className='grid px-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-x-8 gap-y-3 justify-center items-center'>
                 <div>
                     <label className='label'>Background Type</label>
                     <div className='join'>
@@ -122,9 +121,9 @@ export default function StylingContainer({ screenshotBitmap }: StylingContainerP
 
             </form>
             {screenshotBitmap &&
-                <div className='indicator my-10'>
-                    <span className='overflow-scroll indicator-item cursor-default badge badge-primary'>{screenshotBitmap.width}x{screenshotBitmap.height}</span>
-                    <div className='w-fit max-w-[100%] border border-gray-300 p-10 flex justify-center items-center' style={{
+                <div className='indicator max-w-full w-full snap-center overflow-scroll my-10'>
+                    <span className='indicator-item cursor-default badge badge-primary'>{screenshotBitmap.width}x{screenshotBitmap.height}</span>
+                    <div id={STYLING_CONTAINER_ID} className='border border-gray-300 p-10 flex justify-center items-center' style={{
                         background: compose(bgType, color1, color2),
                         width: screenshotBitmap.width,
                         height: screenshotBitmap.height
@@ -141,6 +140,7 @@ export default function StylingContainer({ screenshotBitmap }: StylingContainerP
                     </div>
                 </div>
             }
+            <a className='btn btn-accent' href={`#${PROCESS_TABS.checkout.carousel_item_id}`}>Proceed to checkout</a>
         </div>
     )
 }
