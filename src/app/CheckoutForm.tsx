@@ -7,7 +7,8 @@ import React from "react"
 type SupportedFileType = 'jpeg' | 'png'
 
 interface CheckoutFormProps {
-    url?: string
+    url?: string,
+    screenshotBitmap?: ImageBitmap
 }
 
 export default function CheckoutForm(props: CheckoutFormProps) {
@@ -43,7 +44,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
                         <input checked={fileType === 'png'} onChange={() => setFileType('png')} className="join-item btn btn-sm" type="radio" name="fileType" aria-label="Png" />
                     </div>
                 </div>
-                <button className="btn btn-primary" onClick={handleDownload}>{isDownloading && <span className="loading loading-spinner text-primary"></span>}Download</button>
+                <button className="btn btn-primary" onClick={handleDownload} disabled={props.screenshotBitmap === undefined}>{isDownloading && <span className="loading loading-spinner text-primary"></span>}Download</button>
             </form>
         </div >
     )

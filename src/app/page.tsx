@@ -39,7 +39,7 @@ export default function Home() {
                     <StylingContainer screenshotBitmap={screenshotBitmap} />
                 </div>
                 <div id={PROCESS_TABS.checkout.carousel_item_id} className='w-full border-b'>
-                    <CheckoutForm />
+                    <CheckoutForm screenshotBitmap={screenshotBitmap} />
                 </div>
             </div>
         </div>
