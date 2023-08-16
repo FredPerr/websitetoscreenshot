@@ -20,6 +20,7 @@ interface ScreenshotFormProps {
     setScreenshotBitmap: React.Dispatch<React.SetStateAction<ImageBitmap | undefined>>
 }
 
+
 export default function ScreenshotForm(props: ScreenshotFormProps) {
 
     const [loading, setLoading] = React.useState(false)
@@ -43,6 +44,7 @@ export default function ScreenshotForm(props: ScreenshotFormProps) {
 
         console.info('Sending the screenshot request... This may take up to 20 seconds')
         setError(undefined)
+        setLoading(true)
         try {
             const image_bitmap = await requestScreenshot(url, width, height)
             props.setScreenshotBitmap(image_bitmap)
@@ -52,7 +54,7 @@ export default function ScreenshotForm(props: ScreenshotFormProps) {
                 setTimeout(() => {
                     stylingTab.click()
                     console.info('Switching to the Styling tab')
-                }, 1000)
+                }, 500)
             }
             else console.info('You can now click on the styling tab to view and edit your screenshot')
         } catch (e) {
@@ -109,7 +111,6 @@ export default function ScreenshotForm(props: ScreenshotFormProps) {
                     <span className="label label-text-alt text-error">{error}</span>
                 </label>
             </div>
-
         </form>
     )
 }

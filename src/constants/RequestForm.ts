@@ -5,19 +5,12 @@ const ENDPOINT_REQUEST = {
     fullscreen: false,
 }
 
-type GradientBackgroundType = {
-    type: 'linear' | 'radial'
-    color1: string
-    color2: string
-}
-
-type SolidBackgroundType = {
-    type: 'solid'
-    color1: string
-}
-
-type ComposerStylesType = {
-    background: GradientBackgroundType | SolidBackgroundType
+type StylingType = {
+    background: {
+        type: 'linear' | 'radial' | 'solid'
+        color1: string
+        color2: string
+    }
     window: {
         shadowBlur: number
         shadowColor: string
@@ -28,7 +21,7 @@ type ComposerStylesType = {
     }
 }
 
-const COMPOSER_STYLES: ComposerStylesType = {
+const STYLING_DEFAULTS: StylingType = {
     background: {
         type: 'radial',
         color1: '#DEF8FF',
@@ -52,5 +45,5 @@ const FORM_ERROR_MESSAGES = {
     MIN_MAX_VIEWPORT: `The width and height of the viewport must be between 400 and 4000`,
 }
 
-export { ENDPOINT_REQUEST, COMPOSER_STYLES, URL_REGEX, FORM_ERROR_MESSAGES }
-export type { SolidBackgroundType, GradientBackgroundType, ComposerStylesType }
+export { ENDPOINT_REQUEST, STYLING_DEFAULTS, URL_REGEX, FORM_ERROR_MESSAGES }
+export type { StylingType }

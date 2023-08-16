@@ -3,12 +3,12 @@
 import React from 'react'
 import ScreenshotForm from './ScreenshotForm'
 import { PROCESS_TABS } from '@/constants/DOM'
+import StylingContainer from './StylingContainer'
 
 export default function Home() {
 
     const [activeTabId, setActiveTabId] = React.useState<string>(PROCESS_TABS.screenshot.tab_id)
     const [screenshotBitmap, setScreenshotBitmap] = React.useState<ImageBitmap | undefined>()
-
 
     return (
         <div className='flex flex-col justify-center mx-4 md:mx-12 lg:mx-20 items-center'>
@@ -35,7 +35,7 @@ export default function Home() {
                     <ScreenshotForm screenshotBitmap={screenshotBitmap} setScreenshotBitmap={setScreenshotBitmap} />
                 </div>
                 <div id={PROCESS_TABS.styling.carousel_item_id} className='carousel-item w-full'>
-                    <p>Styling Tab Opened</p>
+                    <StylingContainer screenshotBitmap={screenshotBitmap}/>
                 </div>
                 <div id={PROCESS_TABS.checkout.carousel_item_id} className='carousel-item w-full'>
                     <p>Checkout Tab Opened</p>
