@@ -41,7 +41,7 @@ export default function StylingContainer({ screenshotBitmap }: StylingContainerP
 
     return (
         <div className='w-full flex flex-col items-center'>
-            <form className='grid px-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-x-8 gap-y-3 justify-center items-center'>
+            <form className='grid px-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-fit md:w-full gap-x-8 gap-y-3 justify-center items-center'>
                 <div>
                     <label className='label'>Background Type</label>
                     <div className='join'>
@@ -54,53 +54,59 @@ export default function StylingContainer({ screenshotBitmap }: StylingContainerP
                     <label className='label'>Background Color 1</label>
                     <div className='flex items-center gap-2'>
                         <ColorPicker color={color1} setColor={setColor1} />
-                        <input type='text' className='join-item input input-bordered' value={color1} onChange={(e) => setColor1(e.currentTarget.value)} />
+                        <input type='text' className='input input-bordered input-sm' value={color1} onChange={(e) => setColor1(e.currentTarget.value)} />
                     </div>
                 </div>
-                <div>
-                    <label className='label'>Background Color 2</label>
-                    <div className='flex items-center gap-2'>
-                        <ColorPicker color={color2} setColor={setColor2} />
-                        <input type='text' className='join-item input input-bordered' value={color2} onChange={(e) => setColor2(e.currentTarget.value)} />
+                {bgType !== 'solid' &&
+                    <div>
+                        <label className='label'>Background Color 2</label>
+                        <div className='flex items-center gap-2'>
+                            <ColorPicker color={color2} setColor={setColor2} />
+                            <input type='text' className='input input-bordered input-sm' value={color2} onChange={(e) => setColor2(e.currentTarget.value)} />
+                        </div>
                     </div>
-                </div>
+                }
                 <div>
                     <label className='label'>Shadow Color</label>
                     <div className='flex items-center gap-2'>
                         <ColorPicker color={shadowColor} setColor={setShadowColor} alpha />
-                        <input type='text' className='join-item input input-bordered' value={shadowColor} onChange={(e) => setShadowColor(e.currentTarget.value)} />
+                        <input type='text' className='input input-bordered input-sm' value={shadowColor} onChange={(e) => setShadowColor(e.currentTarget.value)} />
                     </div>
                 </div>
                 <div>
                     <label className='label'>Shadow Blur</label>
                     <div className='flex items-center gap-2'>
-                        <input type='number' min={0} value={shadowBlur} onChange={(e) => { try { setShadowBlur(Number(e.currentTarget.value)) } catch { } }} className='join-item input input-bordered' />
+                        <input type='range' min={0} max={100} value={shadowBlur} className='range range-sm range-primary' onChange={(e) => { try { setShadowBlur(Number(e.currentTarget.value)) } catch { e.preventDefault() } }} />
+                        <input type='text' pattern='\d' min={0} max={100} value={shadowBlur} onChange={(e) => { try { setShadowBlur(Number(e.currentTarget.value)) } catch { e.preventDefault() } }} className='input input-bordered input-sm w-16 text-center' />px
                     </div>
                 </div>
                 <div>
                     <label className='label'>Border Radius</label>
                     <div className='flex items-center gap-2'>
-                        <input type='number' min={0} value={borderRadius} onChange={(e) => { try { setBorderRadius(Number(e.currentTarget.value)) } catch { } }} className='join-item input input-bordered' />
+                        <input type='range' min={0} max={100} value={borderRadius} className='range range-sm range-primary' onChange={(e) => { try { setBorderRadius(Number(e.currentTarget.value)) } catch { e.preventDefault() } }} />
+                        <input type='text' pattern='\d' min={0} max={100} value={borderRadius} onChange={(e) => { try { setBorderRadius(Number(e.currentTarget.value)) } catch { } }} className='input input-bordered input-sm w-16' />px
                     </div>
                 </div>
                 <div>
                     <label className='label'>Border Width</label>
                     <div className='flex items-center gap-2'>
-                        <input type='number' min={0} max={Math.min(screenshotBitmap?.width || 1000, screenshotBitmap?.height || 1000) / 2} value={borderWidth} onChange={(e) => { try { setBorderWidth(Number(e.currentTarget.value)) } catch { } }} className='join-item input input-bordered' />
+                        <input type='range' min={0} max={Math.round(Math.min(screenshotBitmap?.width || 1000, screenshotBitmap?.height || 1000) / 2)} value={borderWidth} className='range range-sm range-primary' onChange={(e) => { try { setBorderWidth(Number(e.currentTarget.value)) } catch { e.preventDefault() } }} />
+                        <input type='text' pattern='\d' min={0} max={Math.round(Math.min(screenshotBitmap?.width || 1000, screenshotBitmap?.height || 1000) / 2)} value={borderWidth} onChange={(e) => { try { setBorderWidth(Number(e.currentTarget.value)) } catch { } }} className='input input-bordered input-sm w-16' />px
                     </div>
                 </div>
                 <div>
                     <label className='label'>Border Color</label>
                     <div className='flex items-center gap-2'>
                         <ColorPicker color={borderColor} setColor={setBorderColor} />
-                        <input value={borderColor} onChange={(e) => setBorderColor(e.currentTarget.value)} type='text' className='join-item input input-bordered' />
+                        <input value={borderColor} onChange={(e) => setBorderColor(e.currentTarget.value)} type='text' className='input input-bordered input-sm' />
                     </div>
                 </div>
 
                 <div>
                     <label className='label'>Window Margin</label>
                     <div className='flex items-center gap-2'>
-                        <input type='number' min={0} max={Math.min(screenshotBitmap?.width || 1000, screenshotBitmap?.height || 1000) / 2} value={margin} onChange={(e) => { try { setMargin(Number(e.currentTarget.value)) } catch { } }} className='join-item input input-bordered' />
+                        <input type='range' min={0} max={Math.round(Math.min(screenshotBitmap?.width || 1000, screenshotBitmap?.height || 1000) / 2)} value={margin} className='range range-sm range-primary' onChange={(e) => { try { setMargin(Number(e.currentTarget.value)) } catch { e.preventDefault() } }} />
+                        <input type='text' pattern='\d' min={0} max={Math.round(Math.min(screenshotBitmap?.width || 1000, screenshotBitmap?.height || 1000) / 2)} value={margin} onChange={(e) => { try { setMargin(Number(e.currentTarget.value)) } catch { } }} className='input input-bordered input-sm w-16' />px
                     </div>
                 </div>
 
