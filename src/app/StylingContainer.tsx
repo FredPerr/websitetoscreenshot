@@ -109,12 +109,11 @@ export default function StylingContainer({ screenshotBitmap }: StylingContainerP
                         <input type='text' pattern='\d' min={0} max={Math.round(Math.min(screenshotBitmap?.width || 1000, screenshotBitmap?.height || 1000) / 2)} value={margin} onChange={(e) => { try { setMargin(Number(e.currentTarget.value)) } catch { } }} className='input input-bordered input-sm w-16' />px
                     </div>
                 </div>
-
             </form>
             {screenshotBitmap &&
-                <div className='indicator my-10'>
+                <div className='indicator my-10 max-w-[100%] snap-center'>
+                    <span className='indicator-item cursor-default badge badge-primary'>{screenshotBitmap.width}x{screenshotBitmap.height}</span>
                     <div className='max-w-full w-fit snap-center overflow-scroll'>
-                        <span className='indicator-item cursor-default badge badge-primary'>{screenshotBitmap.width}x{screenshotBitmap.height}</span>
                         <div id={STYLING_CONTAINER_ID} className='border border-gray-300 flex justify-center items-center' style={{
                             background: compose(bgType, color1, color2),
                             width: screenshotBitmap.width,

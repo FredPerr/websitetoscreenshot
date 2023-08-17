@@ -1,6 +1,6 @@
 'use client'
 
-import { PROCESS_TABS } from "@/constants/DOM"
+import { PRESETS, PresetKey } from "@/constants/Frame"
 import { FORM_ERROR_MESSAGES, URL_REGEX } from "@/constants/RequestForm"
 import { requestScreenshot } from "@/utils/ScreenshotRequestAPI"
 import React from "react"
@@ -25,8 +25,11 @@ export default function ScreenshotForm(props: ScreenshotFormProps) {
 
     const [loading, setLoading] = React.useState(false)
     const [error, setError] = React.useState<string | undefined>(undefined)
+    const [viewportPreset, setViewportPreset] = React.useState<PresetKey>('desktop')
+    const [width, setWidth] = React.useState<number>(PRESETS.desktop.width)
+    const [height, setHeight] = React.useState<number>(PRESETS.desktop.height)
 
-    const { register, formState: { errors }, handleSubmit } = useForm<SchemaType>({
+    const { register, formState: { errors }, handleSubmit, setValue } = useForm<SchemaType>({
         defaultValues: {
             url: '',
             width: 1440,
@@ -57,8 +60,8 @@ export default function ScreenshotForm(props: ScreenshotFormProps) {
     }
 
     return (
-        <form className="grid px-6 grid-cols-1 md:grid-cols-2 w-full gap-x-8 gap-y-3 h-fit" onSubmit={handleSubmit(onSubmit)}>
-            <div className="md:col-span-2">
+        <form className="grid px-6 grid-cols-1 md:grid-cols-3 w-full gap-x-8 gap-y-3 h-fit" onSubmit={handleSubmit(onSubmit)}>
+            <div className="md:col-span-3">
                 <label className="label label-text">URL of the web page to screenshot</label>
                 <input className="input input-bordered input-primary w-full input-md"
                     placeholder="https://example.com" type="url" autoComplete="off" about="URL of the web page to screenshot, must only be a simple url of the following pattern: http(s)://www.abc.xyz/something/"
@@ -74,8 +77,26 @@ export default function ScreenshotForm(props: ScreenshotFormProps) {
             </div>
 
             <div>
+                <label className="label label-text">Screenshot Dimension Preset</label>
+                <select value={viewportPreset} onChange={(e) => { }} className="select select-bordered select-primary">
+                    {Object.keys(PRESETS).map((preset_key) => {
+                        const preset_key_cast = preset_key as PresetKey
+                        const preset = PRESETS[preset_key_cast];
+                        return <option onClick={() => {
+                            setValue('width', preset.width)
+                            setValue('height', preset.height)
+                            setWidth(preset.width)
+                            setHeight(preset.height)
+                            setViewportPreset(preset_key_cast)
+                        }} className="" value={preset_key} disabled={viewportPreset === preset_key_cast} key={preset_key}>{preset.name} ({preset.width}x{preset.height})</option>
+                    })}
+                </select>
+
+            </div>
+
+            <div>
                 <label className="label label-text">Website screenshot viewport width (px)</label>
-                <input className="input input-bordered input-primary w-full input-md" type="number" {...register("width", { required: true, min: 400, max: 4000 })} placeholder="1440" />
+                <input className="input input-bordered input-primary w-20 text-center input-sm" type="text" pattern="\d{0,4}" {...register("width", { required: true, min: 400, max: 4000 })} placeholder="1440" value={width} onChange={(e) => { setWidth(Number(e.currentTarget.value)); }} /> px
                 <label className="label w-fit">
                     <span className="label-text-alt text-error">{errors.width?.type === 'required' && FORM_ERROR_MESSAGES.REQUIRED_FIELD}</span>
                     <span className="label-text-alt text-error">{errors.width?.type === 'min' || errors.width?.type === 'max' && FORM_ERROR_MESSAGES.MIN_MAX_VIEWPORT}</span>
@@ -84,14 +105,14 @@ export default function ScreenshotForm(props: ScreenshotFormProps) {
 
             <div>
                 <label className="label label-text">Website screenshot viewport height (px)</label>
-                <input className="input input-bordered input-primary w-full input-md" type="number" {...register("height", { required: true, min: 400, max: 4000 })} placeholder="1080" />
+                <input className="input input-bordered input-primary w-20 text-center input-sm" type="text" pattern="\d{0,5}" {...register("height", { required: true, min: 400, max: 4000 })} placeholder="1080" value={height} onChange={(e) => { setHeight(Number(e.currentTarget.value)); }} /> px
                 <label className="label w-fit">
                     <span className="label-text-alt text-error">{errors.height?.type === 'required' && FORM_ERROR_MESSAGES.REQUIRED_FIELD}</span>
                     <span className="label-text-alt text-error">{errors.height?.type === 'min' || errors.width?.type === 'max' && FORM_ERROR_MESSAGES.MIN_MAX_VIEWPORT}</span>
                 </label>
             </div>
 
-            <div className="md:col-span-2 w-full flex justify-center items-center flex-col">
+            <div className="md:col-span-3 w-full flex justify-center items-center flex-col">
                 <button className="btn btn-primary btn-md" disabled={loading} type="submit">{loading && <span className="loading loading-spinner text-white"></span>}Take a screenshot</button>
                 <label className="label w-fit">
                     {loading &&

@@ -17,7 +17,7 @@ export default function Home() {
                 <div id={PROCESS_TABS.screenshot.carousel_item_id} className='w-full border-b'>
                     <ScreenshotForm screenshotBitmap={screenshotBitmap} setScreenshotBitmap={setScreenshotBitmap} />
                 </div>
-                <div id={PROCESS_TABS.styling.carousel_item_id} className='w-full border-b'>
+                <div id={PROCESS_TABS.styling.carousel_item_id} className='w-full pb-10 border-b'>
                     <StylingContainer screenshotBitmap={screenshotBitmap} />
                 </div>
                 <div id={PROCESS_TABS.checkout.carousel_item_id} className='w-full border-b'>
