@@ -36,7 +36,7 @@ export default function CheckoutForm(props: CheckoutFormProps) {
         <div className="flex flex-col w-full item-center">
             <p className="text-green-600 text-center text-xl">WebsiteToScreenshot.com is <strong>free!</strong></p>
             <p className="text-center text-gray-700 text-lg">Would you be willing to share it with your network?</p>
-            <a className="btn btn-neutral font-medium rounded-full w-fit btn-sm mx-auto my-4" target="_blank" rel="noreferrer" href="https://twitter.com/intent/tweet?text=Take%20a%20look%20at%20this%20awesome%20tool%20to%20showcase%20your%20project%20by%20&via=PerronFred&original_referer=https://websitetoscreenshot.com">Share on <strong>𝕏</strong></a>
+            <a className="btn btn-neutral font-medium rounded-full w-fit btn-sm mx-auto my-4" target="_blank" rel="noreferrer" href="https://twitter.com/intent/tweet?text=Take%20a%20look%20at%20this%20awesome%20tool%20to%20showcase%20your%20project&via=PerronFred&original_referer=https://websitetoscreenshot.com">Share on <strong>𝕏</strong></a>
             <form className="flex flex-col gap-6 items-center">
                 <div>
                     <label className="label">File Type</label>
