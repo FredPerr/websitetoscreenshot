@@ -3,8 +3,9 @@ import React from 'react'
 
 
 export const metadata = {
-    title: 'WebsiteToVisual',
-    description: 'Convert website to a screenshot or a scrolling video (GIF) with beautiful contours in seconds.',
+    title: 'WebsiteToScreenshot - Take a Screenshot with Beautiful Styling for Social Media Posting',
+    description: 'Convert website to a screenshot (PNG, JPEG) with beautiful contours. Customize the background, margins, borders, ...',
+   keywords: ['convert', 'website', 'screenshot', 'styled']
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
